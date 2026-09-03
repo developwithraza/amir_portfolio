@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, FileText, Send } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../context/ThemeContext";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -16,7 +17,7 @@ export default function Navbar({ onOpenResume }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
-
+  const { toggleTheme, isDark } = useTheme();
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -40,15 +41,15 @@ export default function Navbar({ onOpenResume }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-zinc-800/80 py-3 shadow-sm"
-          : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-zinc-800/80 py-3 shadow-sm"
+        : "bg-transparent py-5"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
-        <a
+        <img src={isDark ? '/light-logo.png' : '/dark-logo.png'} width={80} />
+        {/* <a
           href="#hero"
           className="flex items-center space-x-2 group focus:outline-none"
         >
@@ -61,7 +62,7 @@ export default function Navbar({ onOpenResume }) {
             Amir<span className="text-blue-600 dark:text-teal-500">.Ansari</span>
             <span className="ml-2 inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           </span>
-        </a>
+        </a> */}
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-1 bg-slate-100/70 dark:bg-zinc-900/60 p-1.5 rounded-full border border-slate-200/60 dark:border-zinc-800/60 backdrop-blur-md">
@@ -71,11 +72,10 @@ export default function Navbar({ onOpenResume }) {
               <a
                 key={link.name}
                 href={link.href}
-                className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                  isActive
-                    ? "text-teal-800 dark:text-cyan-400 font-semibold"
-                    : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
+                className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${isActive
+                  ? "text-teal-800 dark:text-cyan-400 font-semibold"
+                  : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
               >
                 {isActive && (
                   <motion.div
