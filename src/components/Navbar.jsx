@@ -52,13 +52,13 @@ export default function Navbar({ onOpenResume }) {
           href="#hero"
           className="flex items-center space-x-2 group focus:outline-none"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-0.5 shadow-md group-hover:shadow-blue-500/25 transition-all">
-            <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-[10px] flex items-center justify-center font-bold text-base text-blue-600 dark:text-cyan-400 font-mono">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-white via-black to-gray-400 p-0.5 shadow-md group-hover:shadow-blue-500/25 transition-all">
+            <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-[10px] flex items-center justify-center font-bold text-base text-teal-800 dark:text-teal-500 font-mono">
               A
             </div>
           </div>
           <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white flex items-center">
-            Amir<span className="text-blue-600 dark:text-cyan-400">.dev</span>
+            Amir<span className="text-blue-600 dark:text-teal-500">.Ansari</span>
             <span className="ml-2 inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           </span>
         </a>
@@ -73,7 +73,7 @@ export default function Navbar({ onOpenResume }) {
                 href={link.href}
                 className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                   isActive
-                    ? "text-blue-600 dark:text-cyan-400 font-semibold"
+                    ? "text-teal-800 dark:text-cyan-400 font-semibold"
                     : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >

@@ -6,7 +6,7 @@ export const personalInfo = {
   location: "Indirapuram, Ghaziabad, Uttar Pradesh - 201014",
   github: "https://github.com/developwithraza",
   linkedin: "https://www.linkedin.com/in/amir-ansari-70162917a/",
-  status: "Available for Frontend & Full-Stack Opportunities",
+  status: "Available for Frontend Developer Opportunities",
   summary: `React.js Developer with 3+ years of experience building responsive, scalable, and high-performance web applications using React.js, Next.js, JavaScript, TypeScript, Redux Toolkit, and modern UI frameworks.
 Experienced in developing admin dashboards, e-commerce platforms, property booking systems, healthcare applications, daycare management systems, real-time chat applications, role-based access systems, payment gateway integrations, map-based features, and API-driven applications.
 Strong frontend development experience with REST APIs, RTK Query, Socket.IO, WebSockets, Firebase, Google Maps APIs, AWS EC2/VPS deployment environments, and practical backend understanding of Node.js, Express.js, and MongoDB.`,
