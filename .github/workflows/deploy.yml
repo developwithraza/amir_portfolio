@@ -1,0 +1,71 @@
+name: Deploy React Portfolio
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build React application
+      - name: Build application
+        run: npm run build
+
+      # 5. Setup SSH
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      # 6. Configure known hosts
+      - name: Configure SSH known hosts
+        env:
+          SERVER_KNOWN_HOSTS: ${{ secrets.SERVER_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SERVER_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      # 7. Deploy build files to VPS
+      - name: Deploy to VPS
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=yes" \
+            dist/ \
+            ${SERVER_USER}@${SERVER_HOST}:/var/www/my-react-app/
+
+      # 8. Deployment completed
+      - name: Deployment successful
+        run: echo "Portfolio deployed successfully!"
