@@ -38,34 +38,43 @@ jobs:
       - name: Build application
         run: npm run build
 
-      # 5. Setup SSH
-      - name: Setup SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
-
-      # 6. Configure known hosts
-      - name: Configure SSH known hosts
+      # 5. Setup SSH Key and Agent (Fixes the libcrypto error)
+      - name: Setup SSH Key
         env:
-          SERVER_KNOWN_HOSTS: ${{ secrets.SERVER_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
+          # Create .ssh directory
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          printf '%s\n' "$SERVER_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
 
-      # 7. Deploy build files to VPS
+          # Write the private key to a file. 
+          # The 'printf' command adds the trailing newline that libcrypto requires.
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Start the SSH agent and add the key
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/deploy_key
+
+          # Automatically scan the server and add its fingerprint to known_hosts
+          # (This means you don't need the SERVER_KNOWN_HOSTS secret anymore)
+          ssh-keyscan -p "${SERVER_PORT:-22}" -H "$SERVER_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # 6. Deploy build files to VPS
       - name: Deploy to VPS
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
+          # Use the -i flag to explicitly point to the key file we just created
           rsync -avz --delete \
-            -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=yes" \
+            -e "ssh -i ~/.ssh/deploy_key -p ${SERVER_PORT:-22} -o StrictHostKeyChecking=yes" \
             dist/ \
             ${SERVER_USER}@${SERVER_HOST}:/var/www/my-react-app/
 
-      # 8. Deployment completed
+      # 7. Deployment completed
       - name: Deployment successful
         run: echo "Portfolio deployed successfully!"
