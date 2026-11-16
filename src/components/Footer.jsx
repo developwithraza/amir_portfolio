@@ -2,8 +2,10 @@ import React from "react";
 import { ArrowUp, Mail, Phone } from "lucide-react";
 import { personalInfo } from "../data/resumeData";
 import { GithubIcon, LinkedinIcon } from "./SocialIcons";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Footer() {
+  const { toggleTheme, isDark } = useTheme();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -15,18 +17,15 @@ export default function Footer() {
           {/* Col 1: Brand & Tagline */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-0.5">
-                <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-[10px] flex items-center justify-center font-bold text-sm text-blue-600 dark:text-cyan-400 font-mono">
-                  A
-                </div>
-              </div>
-              <span className="font-bold text-lg text-slate-900 dark:text-white">
-                Amir Ansari
-              </span>
+              <img
+                src={isDark ? "/light-logo.png" : "/dark-logo.png"}
+                width={80}
+              />
             </div>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 max-w-sm leading-relaxed">
-              Frontend & React.js Developer dedicated to engineering resilient, scalable architectures,
-              real-time interfaces, and modern enterprise dashboards.
+              Frontend & React.js Developer dedicated to engineering resilient,
+              scalable architectures, real-time interfaces, and modern
+              enterprise dashboards.
             </p>
             <div className="flex items-center space-x-3 text-xs text-slate-500 dark:text-zinc-400 pt-1">
               <span className="flex items-center">
@@ -44,12 +43,39 @@ export default function Footer() {
               Navigation
             </h4>
             <ul className="space-y-2 text-xs text-slate-600 dark:text-zinc-400">
-              <li><a href="#about" className="hover:text-blue-500 transition">About Me</a></li>
-              <li><a href="#experience" className="hover:text-blue-500 transition">Work Experience</a></li>
-              <li><a href="#projects" className="hover:text-blue-500 transition">Featured Projects</a></li>
-              <li><a href="#skills" className="hover:text-blue-500 transition">Technical Skills</a></li>
-              <li><a href="#education" className="hover:text-blue-500 transition">Education</a></li>
-              <li><a href="#contact" className="hover:text-blue-500 transition">Contact</a></li>
+              <li>
+                <a href="#about" className="hover:text-blue-500 transition">
+                  About Me
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#experience"
+                  className="hover:text-blue-500 transition"
+                >
+                  Work Experience
+                </a>
+              </li>
+              <li>
+                <a href="#projects" className="hover:text-blue-500 transition">
+                  Featured Projects
+                </a>
+              </li>
+              <li>
+                <a href="#skills" className="hover:text-blue-500 transition">
+                  Technical Skills
+                </a>
+              </li>
+              <li>
+                <a href="#education" className="hover:text-blue-500 transition">
+                  Education
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="hover:text-blue-500 transition">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -98,7 +124,8 @@ export default function Footer() {
         {/* Bottom Bar with Back to Top */}
         <div className="pt-8 border-t border-slate-200 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-zinc-400">
           <div>
-            © {new Date().getFullYear()} Amir Ansari. All rights reserved. Built with React & Vite.
+            © {new Date().getFullYear()} Amir Ansari. All rights reserved. Built
+            with React & Vite.
           </div>
 
           <button
